@@ -44,7 +44,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ListFeature/Main.swift,
-				ListFeature/Presentation/ListView.swift,
+				ListFeature/Presentation/Views/ListView.swift,
+				ListFeature/Presentation/Views/ProductRow.swift,
 			);
 			target = 05EFBB882F9A203200C201F8 /* FormFeature */;
 		};
