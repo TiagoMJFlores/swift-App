@@ -41,7 +41,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				FormFeature/DependencyInjection/FormFeatureDependencies.swift,
+				Core/DependencyInjection/FormFeatureDependencies.swift,
 				FormFeature/Main.swift,
 				FormFeature/Presentation/FormView.swift,
 			);
@@ -50,9 +50,9 @@
 		05EFBBCB2F9A24FF00C201F8 /* Exceptions for "swiftapp" folder in "FormFeature" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Core/DependencyInjection/ListFeatureDependencies.swift,
 				"ListFeature/Data/Mappers/ProductDTO+Domain.swift",
 				ListFeature/Data/ProductRepository.swift,
-				ListFeature/DependencyInjection/ListFeatureDependencies.swift,
 				ListFeature/Domain/Models/Product.swift,
 				ListFeature/Domain/ProductListInteractor.swift,
 				ListFeature/Domain/ProductRepositoryProtocol.swift,
