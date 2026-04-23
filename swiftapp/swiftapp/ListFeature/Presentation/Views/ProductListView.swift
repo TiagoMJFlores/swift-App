@@ -1,5 +1,5 @@
 //
-//  ListView.swift
+//  ProductListView.swift
 //  swiftapp
 //
 //  Created by Tiago Flores on 23/04/2026.
@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-struct ListView: View {
-    @State private var viewModel: ListViewModel
+struct ProductListView: View {
+    @State private var viewModel: ProductListViewModel
     
     private enum Strings {
         static let navigationTitle = "Products"
@@ -20,7 +20,7 @@ struct ListView: View {
         static let failure = "exclamationmark.triangle"
     }
 
-    init(viewModel: ListViewModel) {
+    init(viewModel: ProductListViewModel) {
         _viewModel = State(wrappedValue: viewModel)
     }
 
@@ -43,9 +43,9 @@ struct ListView: View {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-        case .loaded(let products):
-            List(products) { product in
-                ProductRow(product: product)
+        case .loaded(let items):
+            List(items) { item in
+                ProductRow(item: item)
             }
             .listStyle(.plain)
 

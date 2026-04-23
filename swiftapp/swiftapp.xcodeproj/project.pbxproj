@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6A2F9A5E0C00C201F8 /* Resolver */; };
+		05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6E2F9A5E2300C201F8 /* Resolver */; };
+		05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC712F9A5E4800C201F8 /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		05EFBB972F9A203300C201F8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -43,8 +49,14 @@
 		05EFBBCB2F9A24FF00C201F8 /* Exceptions for "swiftapp" folder in "FormFeature" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				ListFeature/Domain/Models/Product.swift,
+				ListFeature/Domain/ProductListInteractor.swift,
+				ListFeature/Domain/ProductRepositoryProtocol.swift,
 				ListFeature/Main.swift,
-				ListFeature/Presentation/Views/ListView.swift,
+				"ListFeature/Presentation/Mappers/Product+ViewItem.swift",
+				ListFeature/Presentation/Mappers/ProductListErrorMessageMapper.swift,
+				ListFeature/Presentation/Models/ProductViewItem.swift,
+				ListFeature/Presentation/ProductListViewModel.swift,
 				ListFeature/Presentation/Views/ProductRow.swift,
 			);
 			target = 05EFBB882F9A203200C201F8 /* FormFeature */;
@@ -78,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +112,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */,
+				05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,6 +126,7 @@
 				05EFBB8B2F9A203200C201F8 /* swiftapp */,
 				05EFBB992F9A203300C201F8 /* swiftappTests */,
 				05EFBBA32F9A203300C201F8 /* swiftappUITests */,
+				05EFBC692F9A5E0C00C201F8 /* Frameworks */,
 				05EFBB8A2F9A203200C201F8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -124,6 +140,13 @@
 				05EFBBC82F9A24EC00C201F8 /* ListFeature.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		05EFBC692F9A5E0C00C201F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,6 +169,7 @@
 			);
 			name = FormFeature;
 			packageProductDependencies = (
+				05EFBC6A2F9A5E0C00C201F8 /* Resolver */,
 			);
 			productName = swiftapp;
 			productReference = 05EFBB892F9A203200C201F8 /* FormFeature.app */;
@@ -214,6 +238,8 @@
 			);
 			name = ListFeature;
 			packageProductDependencies = (
+				05EFBC6E2F9A5E2300C201F8 /* Resolver */,
+				05EFBC712F9A5E4800C201F8 /* Kingfisher */,
 			);
 			productName = swiftapp;
 			productReference = 05EFBBC82F9A24EC00C201F8 /* ListFeature.app */;
@@ -251,6 +277,10 @@
 			);
 			mainGroup = 05EFBB802F9A203200C201F8;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */,
+				05EFBC702F9A5E4000C201F8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 05EFBB8A2F9A203200C201F8 /* Products */;
 			projectDirPath = "";
@@ -728,6 +758,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
+		05EFBC702F9A5E4000C201F8 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		05EFBC6A2F9A5E0C00C201F8 /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
+		05EFBC6E2F9A5E2300C201F8 /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
+		05EFBC712F9A5E4800C201F8 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 05EFBC702F9A5E4000C201F8 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 05EFBB812F9A203200C201F8 /* Project object */;
 }

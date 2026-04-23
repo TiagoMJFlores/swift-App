@@ -4,7 +4,9 @@
 //
 //  Created by Tiago Flores on 23/04/2026.
 //
+
 import SwiftUI
+import Kingfisher
 
 struct ProductRow: View {
 
@@ -21,45 +23,43 @@ struct ProductRow: View {
         static let ratingSpacing: CGFloat = 4
         static let verticalPadding: CGFloat = 4
         static let titleLineLimit = 1
-        static let ratingFractionDigits = 2
+        static let thumbnailFadeDuration: Double = 0.2
     }
 
-    let product: Product
+    let item: ProductViewItem
 
     var body: some View {
         HStack(spacing: Layout.rowSpacing) {
-            AsyncImage(url: product.thumbnail) { phase in
-                switch phase {
-                case .success(let image):
-                    image.resizable().scaledToFill()
-                case .empty:
-                    ProgressView()
-                case .failure:
-                    Image(systemName: Icons.imagePlaceholder)
-                        .foregroundStyle(.secondary)
-                @unknown default:
-                    Color.gray.opacity(Layout.thumbnailBackgroundOpacity)
-                }
-            }
-            .frame(width: Layout.thumbnailSize, height: Layout.thumbnailSize)
-            .background(Color.gray.opacity(Layout.thumbnailBackgroundOpacity))
-            .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailCornerRadius))
+            thumbnail
+                .frame(width: Layout.thumbnailSize, height: Layout.thumbnailSize)
+                .background(Color.gray.opacity(Layout.thumbnailBackgroundOpacity))
+                .clipShape(RoundedRectangle(cornerRadius: Layout.thumbnailCornerRadius))
 
             VStack(alignment: .leading, spacing: Layout.textSpacing) {
-                Text(product.title)
+                Text(item.title)
                     .font(.headline)
                     .lineLimit(Layout.titleLineLimit)
 
                 HStack(spacing: Layout.ratingSpacing) {
-                    Image(systemName: product.ratingCategory.iconName)
+                    Image(systemName: item.ratingIconName)
                         .font(.caption)
                         .foregroundStyle(.yellow)
-                    Text(product.rating, format: .number.precision(.fractionLength(Layout.ratingFractionDigits)))
+                    Text(item.formattedRating)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
             }
         }
         .padding(.vertical, Layout.verticalPadding)
+    }
+
+    @ViewBuilder
+    private var thumbnail: some View {
+        KFImage(item.thumbnail)
+            .placeholder { ProgressView() }
+            .fade(duration: Layout.thumbnailFadeDuration)
+            .cancelOnDisappear(true)
+            .resizable()
+            .scaledToFill()
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ProductRepository.swift
+//  ProductRepositoryProtocol.swift
 //  swiftapp
 //
 //  Created by Tiago Flores on 23/04/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ProductRepository {
+protocol ProductRepositoryProtocol {
  
     func fetchProducts(limit: Int, skip: Int) async throws -> [Product]
 }

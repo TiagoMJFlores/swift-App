@@ -1,18 +1,16 @@
 //
-//  ProductRepositoryImpl.swift
+//  ProductRepository.swift
 //  swiftapp
 //
 //  Created by Tiago Flores on 23/04/2026.
 //
 
 import Foundation
+import Resolver
 
-final class ProductRepositoryImpl: ProductRepository {
-    private let httpClient: HTTPClient
+final class ProductRepository: ProductRepositoryProtocol {
 
-    init(httpClient: HTTPClient) {
-        self.httpClient = httpClient
-    }
+    @Injected private var httpClient: HTTPClientProtocol
 
     func fetchProducts(limit: Int, skip: Int) async throws -> [Product] {
         let response = try await httpClient.send(

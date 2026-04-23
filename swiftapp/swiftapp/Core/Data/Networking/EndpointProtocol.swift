@@ -1,5 +1,5 @@
 //
-//  Endpoint.swift
+//  EndpointProtocol.swift
 //  swiftapp
 //
 //  Created by Tiago Flores on 23/04/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Endpoint {
+protocol EndpointProtocol {
     var baseURL: URL { get }
     var path: String { get }
     var method: HTTPMethod { get }
@@ -15,7 +15,7 @@ protocol Endpoint {
     var headers: [String: String] { get }
 }
 
-extension Endpoint {
+extension EndpointProtocol {
     var baseURL: URL { URL(string: "https://dummyjson.com")! }
     var method: HTTPMethod { .get }
     var queryItems: [URLQueryItem] { [] }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ProductsEndpoint: Endpoint {
+enum ProductsEndpoint: EndpointProtocol {
     case list(limit: Int, skip: Int)
 
     var path: String {

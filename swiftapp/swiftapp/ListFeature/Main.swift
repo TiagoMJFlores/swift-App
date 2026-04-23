@@ -6,21 +6,18 @@
 //
 
 import SwiftUI
+import Resolver
 
 @main
 struct Main: App {
 
-    private let viewModel: ListViewModel
-
     init() {
-        let httpClient = URLSessionHTTPClient()
-        let repository = ProductRepositoryImpl(httpClient: httpClient)
-        self.viewModel = ListViewModel(repository: repository)
+        Resolver.registerAllServices()
     }
 
     var body: some Scene {
         WindowGroup {
-            ListView(viewModel: viewModel)
+            ProductListView(viewModel: Resolver.resolve())
         }
     }
 }

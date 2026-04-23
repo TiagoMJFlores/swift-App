@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class URLSessionHTTPClient: HTTPClient {
+protocol HTTPClientProtocol: Sendable {
+    func send<T: Decodable & Sendable>(_ endpoint: EndpointProtocol, as type: T.Type) async throws -> T
+}
+
+final class URLSessionHTTPClient: HTTPClientProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
 
@@ -19,7 +23,7 @@ final class URLSessionHTTPClient: HTTPClient {
         self.decoder = decoder
     }
 
-    func send<T: Decodable & Sendable>(_ endpoint: Endpoint, as type: T.Type) async throws -> T {
+    func send<T: Decodable & Sendable>(_ endpoint: EndpointProtocol, as type: T.Type) async throws -> T {
         let request = try endpoint.urlRequest()
 
         let data: Data

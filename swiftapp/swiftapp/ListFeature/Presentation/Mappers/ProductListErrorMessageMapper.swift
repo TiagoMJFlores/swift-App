@@ -1,5 +1,5 @@
 //
-//  ListErrorMessageMapper.swift
+//  ProductListErrorMessageMapper.swift
 //  swiftapp
 //
 //  Created by Tiago Flores on 23/04/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ListErrorMessageMapper {
+enum ProductListErrorMessageMapper {
     case loadProducts(Error)
     case searchProducts(Error)
 
