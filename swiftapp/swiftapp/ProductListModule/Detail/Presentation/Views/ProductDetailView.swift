@@ -26,11 +26,14 @@ struct ProductDetailView: View {
         static let sectionSpacing: CGFloat = 16
         static let rowSpacing: CGFloat = 8
         static let contentPadding: CGFloat = 20
+        static let imageBaseHeight: CGFloat = 320
+        static let imageMinHeight: CGFloat = 120
     }
 
     let productId: Int
 
     @State private var viewModel: ProductDetailViewModel
+    @State private var scrollOffset: CGFloat = 0
 
     init(productId: Int) {
         self.productId = productId
@@ -68,24 +71,38 @@ struct ProductDetailView: View {
 
     private func loadedContent(item: ProductDetailViewItem) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
-                Text(item.title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
+            VStack(alignment: .leading, spacing: 0) {
+                StretchHeaderImage(
+                    url: item.imageURL,
+                    scrollOffset: scrollOffset,
+                    baseHeight: Layout.imageBaseHeight,
+                    minHeight: Layout.imageMinHeight
+                )
 
-                VStack(alignment: .leading, spacing: Layout.rowSpacing) {
-                    LabelledRow(label: Strings.priceLabel, value: item.formattedPrice)
-                    LabelledRow(label: Strings.discountLabel, value: item.formattedDiscount)
-                    LabelledRow(label: Strings.stockLabel, value: item.formattedStock)
-                    RatingRow(
-                        label: Strings.ratingLabel,
-                        iconName: item.ratingIconName,
-                        value: item.formattedRating
-                    )
+                VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
+                    Text(item.title)
+                        .font(.title2)
+                        .fontWeight(.semibold)
+
+                    VStack(alignment: .leading, spacing: Layout.rowSpacing) {
+                        LabelledRow(label: Strings.priceLabel, value: item.formattedPrice)
+                        LabelledRow(label: Strings.discountLabel, value: item.formattedDiscount)
+                        LabelledRow(label: Strings.stockLabel, value: item.formattedStock)
+                        RatingRow(
+                            label: Strings.ratingLabel,
+                            iconName: item.ratingIconName,
+                            value: item.formattedRating
+                        )
+                    }
                 }
+                .padding(Layout.contentPadding)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(Layout.contentPadding)
+        }
+        .onScrollGeometryChange(for: CGFloat.self) { geometry in
+            geometry.contentOffset.y + geometry.contentInsets.top
+        } action: { _, newValue in
+            scrollOffset = newValue
         }
     }
 }

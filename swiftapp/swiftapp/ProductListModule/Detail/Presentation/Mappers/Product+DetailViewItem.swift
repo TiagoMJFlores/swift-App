@@ -18,7 +18,7 @@ extension Product {
             formattedStock: "\(stock) in stock",
             formattedRating: rating.formatted(.number.precision(.fractionLength(2))),
             ratingIconName: ratingCategory.iconName,
-            thumbnail: thumbnail
+            imageURL: images.first ?? thumbnail
         )
     }
 }

@@ -15,5 +15,5 @@ struct ProductDetailViewItem: Hashable, Sendable {
     let formattedStock: String
     let formattedRating: String
     let ratingIconName: String
-    let thumbnail: URL?
+    let imageURL: URL?
 }
