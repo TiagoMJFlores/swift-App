@@ -8,8 +8,6 @@
 import Foundation
 import SwiftData
 
-/// Shared SwiftData container. Lazy singleton so it's created once per
-/// process and reused across data sources.
 enum PersistenceContainer {
     static let shared: ModelContainer = {
         do {

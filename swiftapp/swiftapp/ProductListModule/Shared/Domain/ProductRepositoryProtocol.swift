@@ -9,4 +9,5 @@ import Foundation
 
 protocol ProductRepositoryProtocol {
     func productsStream() -> AsyncThrowingStream<[Product], Error>
+    func product(withId id: Int) throws -> Product?
 }

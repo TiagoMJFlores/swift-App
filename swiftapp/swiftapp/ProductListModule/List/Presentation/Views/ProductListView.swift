@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-
+import Resolver
 
 struct ProductListView: View {
     @State private var viewModel: ProductListViewModel
-    
+
     private enum Strings {
         static let navigationTitle = "Products"
         static let failureTitle = "Could not load products"
@@ -20,14 +20,17 @@ struct ProductListView: View {
         static let failure = "exclamationmark.triangle"
     }
 
-    init(viewModel: ProductListViewModel) {
-        _viewModel = State(wrappedValue: viewModel)
+    init() {
+        _viewModel = State(wrappedValue: Resolver.resolve())
     }
 
     var body: some View {
         NavigationStack {
             content
                 .navigationTitle(Strings.navigationTitle)
+                .navigationDestination(for: Int.self) { productId in
+                    ProductDetailView(productId: productId)
+                }
         }
         .task {
             if case .idle = viewModel.state {
@@ -45,7 +48,9 @@ struct ProductListView: View {
 
         case .loaded(let items):
             List(items) { item in
-                ProductRow(item: item)
+                NavigationLink(value: item.id) {
+                    ProductRow(item: item)
+                }
             }
             .listStyle(.plain)
 

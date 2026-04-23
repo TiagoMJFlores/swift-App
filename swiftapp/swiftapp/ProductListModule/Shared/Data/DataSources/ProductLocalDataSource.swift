@@ -18,6 +18,7 @@ struct SyncStateSnapshot: Sendable {
 
 protocol ProductLocalDataSourceProtocol {
     func allProducts() throws -> [Product]
+    func product(withId id: Int) throws -> Product?
     func save(_ products: [Product]) throws
     func loadSyncState() throws -> SyncStateSnapshot?
     func saveSyncState(_ snapshot: SyncStateSnapshot) throws
@@ -36,6 +37,14 @@ final class ProductLocalDataSource: ProductLocalDataSourceProtocol {
     func allProducts() throws -> [Product] {
         let descriptor = FetchDescriptor<ProductEntity>(sortBy: [SortDescriptor(\.id)])
         return try context.fetch(descriptor).map { $0.toDomain() }
+    }
+
+    func product(withId id: Int) throws -> Product? {
+        var descriptor = FetchDescriptor<ProductEntity>(
+            predicate: #Predicate { $0.id == id }
+        )
+        descriptor.fetchLimit = 1
+        return try context.fetch(descriptor).first?.toDomain()
     }
 
     func save(_ products: [Product]) throws {

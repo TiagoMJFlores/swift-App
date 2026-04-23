@@ -18,13 +18,3 @@ extension Product {
         )
     }
 }
-
-extension Product.RatingCategory {
-    var iconName: String {
-        switch self {
-        case .low:    return "star"
-        case .medium: return "star.leadinghalf.filled"
-        case .high:   return "star.fill"
-        }
-    }
-}

@@ -42,8 +42,8 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Core/DependencyInjection/FormFeatureDependencies.swift,
-				FormFeature/Main.swift,
-				FormFeature/Presentation/FormView.swift,
+				FormModule/Main.swift,
+				FormModule/Presentation/FormView.swift,
 			);
 			target = 05EFBBC12F9A24EC00C201F8 /* ListFeature */;
 		};
@@ -51,18 +51,9 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Core/DependencyInjection/ListFeatureDependencies.swift,
-				"ListFeature/Data/Mappers/ProductDTO+Domain.swift",
-				ListFeature/Data/ProductRepository.swift,
-				ListFeature/Domain/Models/Product.swift,
-				ListFeature/Domain/ProductListInteractor.swift,
-				ListFeature/Domain/ProductRepositoryProtocol.swift,
-				ListFeature/Main.swift,
-				"ListFeature/Presentation/Mappers/Product+ViewItem.swift",
-				ListFeature/Presentation/Mappers/ProductListErrorMessageMapper.swift,
-				ListFeature/Presentation/Models/ProductViewItem.swift,
-				ListFeature/Presentation/ProductListViewModel.swift,
-				ListFeature/Presentation/Views/ProductListView.swift,
-				ListFeature/Presentation/Views/ProductRow.swift,
+				ProductListModule/List/Presentation/Views/ProductListView.swift,
+				ProductListModule/List/Presentation/Views/ProductRow.swift,
+				ProductListModule/Main.swift,
 			);
 			target = 05EFBB882F9A203200C201F8 /* FormFeature */;
 		};

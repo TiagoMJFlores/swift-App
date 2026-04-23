@@ -15,6 +15,10 @@ final class ProductRepository: ProductRepositoryProtocol {
 
     private let pageSize =  30
 
+    func product(withId id: Int) throws -> Product? {
+        try localDataSource.product(withId: id)
+    }
+
     func productsStream() -> AsyncThrowingStream<[Product], Error> {
         AsyncThrowingStream { continuation in
             let task = Task {

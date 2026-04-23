@@ -24,5 +24,11 @@ enum ListFeatureDependencies {
             .implements(ProductListInteractorProtocol.self)
 
         Resolver.register { ProductListViewModel() }
+
+        // Detail
+        Resolver.register { ProductDetailInteractor() }
+            .implements(ProductDetailInteractorProtocol.self)
+
+        Resolver.register { ProductDetailViewModel() }
     }
 }

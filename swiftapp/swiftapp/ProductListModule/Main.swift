@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Resolver
 
 @main
 struct Main: App {
@@ -17,7 +16,7 @@ struct Main: App {
 
     var body: some Scene {
         WindowGroup {
-            ProductListView(viewModel: Resolver.resolve())
+            ProductListView()
         }
     }
 }
