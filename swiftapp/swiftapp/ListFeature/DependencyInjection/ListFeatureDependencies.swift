@@ -8,18 +8,17 @@
 import Foundation
 import Resolver
 
-extension Resolver {
-    static func registerListFeatureDependencies() {
-        // Data
-        register { ProductRepository() }
+enum ListFeatureDependencies {
+    static func register() {
+        Resolver.registerCoreDependencies()
+
+        Resolver.register { ProductRepository() }
             .implements(ProductRepositoryProtocol.self)
             .scope(.application)
 
-        // Domain
-        register { ProductListInteractor() }
+        Resolver.register { ProductListInteractor() }
             .implements(ProductListInteractorProtocol.self)
 
-        // Presentation
-        register { ProductListViewModel() }
+        Resolver.register { ProductListViewModel() }
     }
 }

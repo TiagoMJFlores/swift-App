@@ -12,7 +12,7 @@ import Resolver
 struct Main: App {
 
     init() {
-        Resolver.registerAllServices()
+        ListFeatureDependencies.register()
     }
 
     var body: some Scene {
