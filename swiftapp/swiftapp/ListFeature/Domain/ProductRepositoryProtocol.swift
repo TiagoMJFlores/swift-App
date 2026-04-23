@@ -8,6 +8,5 @@
 import Foundation
 
 protocol ProductRepositoryProtocol {
- 
-    func fetchProducts(limit: Int, skip: Int) async throws -> [Product]
+    func productsStream() -> AsyncThrowingStream<[Product], Error>
 }

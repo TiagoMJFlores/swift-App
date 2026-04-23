@@ -12,6 +12,10 @@ enum ListFeatureDependencies {
     static func register() {
         Resolver.registerCoreDependencies()
 
+        Resolver.register { ProductLocalDataSource() }
+            .implements(ProductLocalDataSourceProtocol.self)
+            .scope(.application)
+
         Resolver.register { ProductRepository() }
             .implements(ProductRepositoryProtocol.self)
             .scope(.application)

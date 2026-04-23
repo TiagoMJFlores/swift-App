@@ -28,8 +28,10 @@ final class ProductListViewModel {
     func load() async {
         state = .loading
         do {
-            let products = try await interactor.loadProducts()
-            state = .loaded(products.map { $0.toViewItem() })
+            for try await products in interactor.productsStream() {
+                let items = products.map { $0.toViewItem() }
+                state = items.isEmpty ? .loading : .loaded(items)
+            }
         } catch {
             state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)
         }

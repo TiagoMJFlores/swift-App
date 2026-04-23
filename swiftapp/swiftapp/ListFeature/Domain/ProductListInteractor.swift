@@ -9,20 +9,14 @@ import Foundation
 import Resolver
 
 protocol ProductListInteractorProtocol {
-    func loadProducts() async throws -> [Product]
+    func productsStream() -> AsyncThrowingStream<[Product], Error>
 }
 
 final class ProductListInteractor: ProductListInteractorProtocol {
 
     @Injected private var repository: ProductRepositoryProtocol
 
-    private let pageSize: Int
-
-    init(pageSize: Int = 30) {
-        self.pageSize = pageSize
-    }
-
-    func loadProducts() async throws -> [Product] {
-        try await repository.fetchProducts(limit: pageSize, skip: 0)
+    func productsStream() -> AsyncThrowingStream<[Product], Error> {
+        repository.productsStream()
     }
 }
