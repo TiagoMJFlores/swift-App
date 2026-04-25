@@ -6,31 +6,52 @@
 //
 
 import Foundation
-import Observation
+import Combine
 import Resolver
 
-@MainActor
-@Observable
-final class ProductListViewModel {
+final class ProductListViewModel: ObservableObject {
 
     enum ViewState {
         case idle
         case loading
-        case loaded([ProductViewItem])
+        case loaded([Product])
         case failed(String)
     }
 
-    private(set) var state: ViewState = .idle
+    @Published private(set) var state: ViewState = .idle
+    @Published var searchQuery: String = ""
+    @Published private(set) var displayedItems: [ProductViewItem] = []
 
-    @ObservationIgnored
     @Injected private var interactor: ProductListInteractorProtocol
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        bindSearch()
+    }
+
+    private func bindSearch() {
+        Publishers.CombineLatest(
+            $state,
+            $searchQuery
+                .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+                .removeDuplicates()
+        )
+        .map { [interactor] state, query -> [ProductViewItem] in
+            guard case .loaded(let products) = state else { return [] }
+            return interactor
+                .search(query: query, in: products)
+                .map { $0.toViewItem() }
+        }
+        .receive(on: DispatchQueue.main)
+        .assign(to: &$displayedItems)
+    }
 
     func load() async {
         state = .loading
         do {
             for try await products in interactor.productsStream() {
-                let items = products.map { $0.toViewItem() }
-                state = items.isEmpty ? .loading : .loaded(items)
+                state = products.isEmpty ? .loading : .loaded(products)
             }
         } catch {
             state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)

@@ -10,6 +10,7 @@ import Resolver
 
 protocol ProductListInteractorProtocol {
     func productsStream() -> AsyncThrowingStream<[Product], Error>
+    func search(query: String, in products: [Product]) -> [Product]
 }
 
 final class ProductListInteractor: ProductListInteractorProtocol {
@@ -18,5 +19,9 @@ final class ProductListInteractor: ProductListInteractorProtocol {
 
     func productsStream() -> AsyncThrowingStream<[Product], Error> {
         repository.productsStream()
+    }
+
+    func search(query: String, in products: [Product]) -> [Product] {
+        SearchProductsWorker.filter(products, query: query)
     }
 }

@@ -9,25 +9,31 @@ import SwiftUI
 import Resolver
 
 struct ProductListView: View {
-    @State private var viewModel: ProductListViewModel
 
     private enum Strings {
         static let navigationTitle = "Products"
+        static let searchPrompt = "Search products"
         static let failureTitle = "Could not load products"
+        static let emptySearchTitle = "No products found"
+        static let emptySearchMessage = "Try a different search term."
     }
 
     private enum Icons {
         static let failure = "exclamationmark.triangle"
+        static let emptySearch = "magnifyingglass"
     }
 
+    @StateObject private var viewModel: ProductListViewModel
+
     init() {
-        _viewModel = State(wrappedValue: Resolver.resolve())
+        _viewModel = StateObject(wrappedValue: Resolver.resolve())
     }
 
     var body: some View {
         NavigationStack {
             content
                 .navigationTitle(Strings.navigationTitle)
+                .searchable(text: $viewModel.searchQuery, prompt: Text(Strings.searchPrompt))
                 .navigationDestination(for: Int.self) { productId in
                     ProductDetailView(productId: productId)
                 }
@@ -46,13 +52,8 @@ struct ProductListView: View {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-        case .loaded(let items):
-            List(items) { item in
-                NavigationLink(value: item.id) {
-                    ProductRow(item: item)
-                }
-            }
-            .listStyle(.plain)
+        case .loaded:
+            loadedContent
 
         case .failed(let message):
             ContentUnavailableView(
@@ -60,6 +61,25 @@ struct ProductListView: View {
                 systemImage: Icons.failure,
                 description: Text(message)
             )
+        }
+    }
+
+    @ViewBuilder
+    private var loadedContent: some View {
+        let items = viewModel.displayedItems
+        if items.isEmpty && !viewModel.searchQuery.isEmpty {
+            ContentUnavailableView(
+                Strings.emptySearchTitle,
+                systemImage: Icons.emptySearch,
+                description: Text(Strings.emptySearchMessage)
+            )
+        } else {
+            List(items) { item in
+                NavigationLink(value: item.id) {
+                    ProductRow(item: item)
+                }
+            }
+            .listStyle(.plain)
         }
     }
 }
