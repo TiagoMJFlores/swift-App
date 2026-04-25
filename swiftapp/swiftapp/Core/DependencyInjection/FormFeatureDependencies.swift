@@ -11,5 +11,10 @@ import Resolver
 enum FormFeatureDependencies {
     static func register() {
         Resolver.registerCoreDependencies()
+
+        Resolver.register { FormInteractor() }
+            .implements(FormInteractorProtocol.self)
+
+        Resolver.register { FormViewModel() }
     }
 }

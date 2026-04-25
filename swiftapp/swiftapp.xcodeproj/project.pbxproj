@@ -42,8 +42,22 @@
 			membershipExceptions = (
 				Assets.xcassets,
 				Core/DependencyInjection/FormFeatureDependencies.swift,
+				FormModule/Domain/FormInteractor.swift,
+				FormModule/Domain/FormValidators.swift,
+				FormModule/Domain/Models/FormSubmission.swift,
+				FormModule/Domain/Models/Rating.swift,
+				FormModule/Domain/ValidationError.swift,
 				FormModule/Main.swift,
-				FormModule/Presentation/FormView.swift,
+				FormModule/Presentation/FormViewModel.swift,
+				"FormModule/Presentation/Mappers/ValidationError+Message.swift",
+				FormModule/Presentation/Views/DeliverySection.swift,
+				FormModule/Presentation/Views/FieldErrorLabel.swift,
+				FormModule/Presentation/Views/FloatingLabelTextField.swift,
+				FormModule/Presentation/Views/FormActionsBar.swift,
+				FormModule/Presentation/Views/FormView.swift,
+				FormModule/Presentation/Views/PromoSection.swift,
+				FormModule/Presentation/Views/RatingSection.swift,
+				FormModule/Presentation/Views/UserDetailsSection.swift,
 			);
 			target = 05EFBBC12F9A24EC00C201F8 /* ListFeature */;
 		};
@@ -51,6 +65,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Core/DependencyInjection/ListFeatureDependencies.swift,
+				ProductListModule/Detail/Presentation/Views/ProductDetailView.swift,
+				ProductListModule/Detail/Presentation/Views/StretchHeaderImage.swift,
 				ProductListModule/List/Presentation/Views/ProductListView.swift,
 				ProductListModule/List/Presentation/Views/ProductRow.swift,
 				ProductListModule/Main.swift,
