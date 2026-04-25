@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		058C69292F9D572F003ECA74 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 058C69282F9D572F003ECA74 /* GRDB */; };
 		05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6A2F9A5E0C00C201F8 /* Resolver */; };
 		05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6E2F9A5E2300C201F8 /* Resolver */; };
 		05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC712F9A5E4800C201F8 /* Kingfisher */; };
@@ -124,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				058C69292F9D572F003ECA74 /* GRDB in Frameworks */,
 				05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */,
 				05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */,
 			);
@@ -252,6 +254,7 @@
 			packageProductDependencies = (
 				05EFBC6E2F9A5E2300C201F8 /* Resolver */,
 				05EFBC712F9A5E4800C201F8 /* Kingfisher */,
+				058C69282F9D572F003ECA74 /* GRDB */,
 			);
 			productName = swiftapp;
 			productReference = 05EFBBC82F9A24EC00C201F8 /* ListFeature.app */;
@@ -292,6 +295,7 @@
 			packageReferences = (
 				05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */,
 				05EFBC702F9A5E4000C201F8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				058C69212F9D4AE1003ECA74 /* XCRemoteSwiftPackageReference "GRDB" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 05EFBB8A2F9A203200C201F8 /* Products */;
@@ -776,6 +780,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		058C69212F9D4AE1003ECA74 /* XCRemoteSwiftPackageReference "GRDB" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hmlongco/Resolver";
@@ -795,6 +807,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		058C69282F9D572F003ECA74 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 058C69212F9D4AE1003ECA74 /* XCRemoteSwiftPackageReference "GRDB" */;
+			productName = GRDB;
+		};
 		05EFBC6A2F9A5E0C00C201F8 /* Resolver */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */;

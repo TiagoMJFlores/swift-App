@@ -6,11 +6,13 @@
 //
 
 import Foundation
-import SwiftData
+import GRDB
 
-@Model
-final class ProductEntity {
-    @Attribute(.unique) var id: Int
+struct ProductEntity: Codable, FetchableRecord, PersistableRecord, Sendable, Hashable {
+
+    static let databaseTableName = "products"
+
+    var id: Int
     var title: String
     var productDescription: String
     var price: Double
@@ -20,25 +22,10 @@ final class ProductEntity {
     var thumbnail: String?
     var images: [String]
 
-    init(
-        id: Int,
-        title: String,
-        productDescription: String,
-        price: Double,
-        discountPercentage: Double,
-        rating: Double,
-        stock: Int,
-        thumbnail: String?,
-        images: [String]
-    ) {
-        self.id = id
-        self.title = title
-        self.productDescription = productDescription
-        self.price = price
-        self.discountPercentage = discountPercentage
-        self.rating = rating
-        self.stock = stock
-        self.thumbnail = thumbnail
-        self.images = images
+    enum Columns {
+        static let id = Column(CodingKeys.id)
+        static let title = Column(CodingKeys.title)
+        static let productDescription = Column(CodingKeys.productDescription)
+        static let rating = Column(CodingKeys.rating)
     }
 }

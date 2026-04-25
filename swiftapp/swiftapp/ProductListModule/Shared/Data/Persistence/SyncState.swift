@@ -6,19 +6,18 @@
 //
 
 import Foundation
-import SwiftData
+import GRDB
 
-@Model
-final class SyncState {
+struct SyncState: Codable, FetchableRecord, PersistableRecord, Sendable, Hashable {
+
+    static let databaseTableName = "sync_state"
+
+    static let singletonId: Int = 1
+
+    var id: Int = singletonId
     var totalExpected: Int
     var totalDownloaded: Int
     var completedAt: Date?
-
-    init(totalExpected: Int, totalDownloaded: Int, completedAt: Date? = nil) {
-        self.totalExpected = totalExpected
-        self.totalDownloaded = totalDownloaded
-        self.completedAt = completedAt
-    }
 
     var isComplete: Bool { completedAt != nil }
 }

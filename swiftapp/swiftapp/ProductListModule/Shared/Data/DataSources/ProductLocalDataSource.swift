@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftData
+import GRDB
 
 struct SyncStateSnapshot: Sendable {
     let totalExpected: Int
@@ -24,60 +24,61 @@ protocol ProductLocalDataSourceProtocol: Sendable {
     func saveSyncState(_ snapshot: SyncStateSnapshot) async throws
 }
 
-@MainActor
 final class ProductLocalDataSource: ProductLocalDataSourceProtocol {
 
-    private let container: ModelContainer
+    private let dbQueue: DatabaseQueue
 
-    init(container: ModelContainer = PersistenceContainer.shared) {
-        self.container = container
+    init(dbQueue: DatabaseQueue = DatabaseProvider.shared) {
+        self.dbQueue = dbQueue
     }
 
-    private var context: ModelContext { container.mainContext }
-
-    func allProducts() throws -> [Product] {
-        let descriptor = FetchDescriptor<ProductEntity>(sortBy: [SortDescriptor(\.id)])
-        return try context.fetch(descriptor).map { $0.toDomain() }
-    }
-
-    func product(withId id: Int) throws -> Product? {
-        var descriptor = FetchDescriptor<ProductEntity>(
-            predicate: #Predicate { $0.id == id }
-        )
-        descriptor.fetchLimit = 1
-        return try context.fetch(descriptor).first?.toDomain()
-    }
-
-    func save(_ products: [Product]) throws {
-        for product in products {
-            context.insert(ProductEntity(from: product))
+    func allProducts() async throws -> [Product] {
+        try await dbQueue.read { db in
+            try ProductEntity
+                .order(ProductEntity.Columns.id)
+                .fetchAll(db)
+                .map { $0.toDomain() }
         }
-        try context.save()
     }
 
-    func loadSyncState() throws -> SyncStateSnapshot? {
-        let descriptor = FetchDescriptor<SyncState>()
-        guard let state = try context.fetch(descriptor).first else { return nil }
-        return SyncStateSnapshot(
-            totalExpected: state.totalExpected,
-            totalDownloaded: state.totalDownloaded,
-            completedAt: state.completedAt
-        )
+    func product(withId id: Int) async throws -> Product? {
+        try await dbQueue.read { db in
+            try ProductEntity
+                .filter(ProductEntity.Columns.id == id)
+                .fetchOne(db)?
+                .toDomain()
+        }
     }
 
-    func saveSyncState(_ snapshot: SyncStateSnapshot) throws {
-        let descriptor = FetchDescriptor<SyncState>()
-        if let existing = try context.fetch(descriptor).first {
-            existing.totalExpected = snapshot.totalExpected
-            existing.totalDownloaded = snapshot.totalDownloaded
-            existing.completedAt = snapshot.completedAt
-        } else {
-            context.insert(SyncState(
+    func save(_ products: [Product]) async throws {
+        try await dbQueue.write { db in
+            for product in products {
+                try ProductEntity(from: product).insert(db, onConflict: .replace)
+            }
+        }
+    }
+
+    func loadSyncState() async throws -> SyncStateSnapshot? {
+        try await dbQueue.read { db in
+            guard let state = try SyncState.fetchOne(db, key: SyncState.singletonId) else {
+                return nil
+            }
+            return SyncStateSnapshot(
+                totalExpected: state.totalExpected,
+                totalDownloaded: state.totalDownloaded,
+                completedAt: state.completedAt
+            )
+        }
+    }
+
+    func saveSyncState(_ snapshot: SyncStateSnapshot) async throws {
+        try await dbQueue.write { db in
+            let state = SyncState(
                 totalExpected: snapshot.totalExpected,
                 totalDownloaded: snapshot.totalDownloaded,
                 completedAt: snapshot.completedAt
-            ))
+            )
+            try state.save(db)
         }
-        try context.save()
     }
 }

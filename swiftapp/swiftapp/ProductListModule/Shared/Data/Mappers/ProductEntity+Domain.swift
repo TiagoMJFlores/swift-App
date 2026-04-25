@@ -8,7 +8,7 @@
 import Foundation
 
 extension ProductEntity {
-    convenience init(from product: Product) {
+    init(from product: Product) {
         self.init(
             id: product.id,
             title: product.title,
