@@ -26,6 +26,11 @@ struct ProductEntity: Codable, FetchableRecord, PersistableRecord, Sendable, Has
         static let id = Column(CodingKeys.id)
         static let title = Column(CodingKeys.title)
         static let productDescription = Column(CodingKeys.productDescription)
+        static let price = Column(CodingKeys.price)
+        static let discountPercentage = Column(CodingKeys.discountPercentage)
         static let rating = Column(CodingKeys.rating)
+        static let stock = Column(CodingKeys.stock)
+        static let thumbnail = Column(CodingKeys.thumbnail)
+        static let images = Column(CodingKeys.images)
     }
 }

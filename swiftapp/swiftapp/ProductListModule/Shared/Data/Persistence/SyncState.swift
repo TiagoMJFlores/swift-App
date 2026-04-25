@@ -20,4 +20,11 @@ struct SyncState: Codable, FetchableRecord, PersistableRecord, Sendable, Hashabl
     var completedAt: Date?
 
     var isComplete: Bool { completedAt != nil }
+
+    enum Columns {
+        static let id = Column(CodingKeys.id)
+        static let totalExpected = Column(CodingKeys.totalExpected)
+        static let totalDownloaded = Column(CodingKeys.totalDownloaded)
+        static let completedAt = Column(CodingKeys.completedAt)
+    }
 }

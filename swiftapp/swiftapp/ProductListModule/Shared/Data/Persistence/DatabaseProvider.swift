@@ -10,6 +10,8 @@ import GRDB
 
 enum DatabaseProvider {
 
+    private static let databaseFileName = "swiftapp.sqlite"
+
     static let shared: DatabaseQueue = {
         do {
             let url = try storeURL()
@@ -28,28 +30,28 @@ enum DatabaseProvider {
             appropriateFor: nil,
             create: true
         )
-        return directory.appendingPathComponent("swiftapp.sqlite")
+        return directory.appendingPathComponent(databaseFileName)
     }
 
     private static func setupSchema(_ queue: DatabaseQueue) throws {
         try queue.write { db in
-            try db.create(table: "products", ifNotExists: true) { t in
-                t.column("id", .integer).primaryKey()
-                t.column("title", .text).notNull()
-                t.column("productDescription", .text).notNull()
-                t.column("price", .double).notNull()
-                t.column("discountPercentage", .double).notNull()
-                t.column("rating", .double).notNull()
-                t.column("stock", .integer).notNull()
-                t.column("thumbnail", .text)
-                t.column("images", .text).notNull()
+            try db.create(table: ProductEntity.databaseTableName, ifNotExists: true) { t in
+                t.column(ProductEntity.Columns.id.name, .integer).primaryKey()
+                t.column(ProductEntity.Columns.title.name, .text).notNull()
+                t.column(ProductEntity.Columns.productDescription.name, .text).notNull()
+                t.column(ProductEntity.Columns.price.name, .double).notNull()
+                t.column(ProductEntity.Columns.discountPercentage.name, .double).notNull()
+                t.column(ProductEntity.Columns.rating.name, .double).notNull()
+                t.column(ProductEntity.Columns.stock.name, .integer).notNull()
+                t.column(ProductEntity.Columns.thumbnail.name, .text)
+                t.column(ProductEntity.Columns.images.name, .text).notNull()
             }
 
-            try db.create(table: "sync_state", ifNotExists: true) { t in
-                t.column("id", .integer).primaryKey()
-                t.column("totalExpected", .integer).notNull()
-                t.column("totalDownloaded", .integer).notNull()
-                t.column("completedAt", .datetime)
+            try db.create(table: SyncState.databaseTableName, ifNotExists: true) { t in
+                t.column(SyncState.Columns.id.name, .integer).primaryKey()
+                t.column(SyncState.Columns.totalExpected.name, .integer).notNull()
+                t.column(SyncState.Columns.totalDownloaded.name, .integer).notNull()
+                t.column(SyncState.Columns.completedAt.name, .datetime)
             }
         }
     }
