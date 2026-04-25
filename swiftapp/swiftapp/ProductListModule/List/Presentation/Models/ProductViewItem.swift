@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductViewItem: Identifiable, Hashable, Sendable {
+struct ProductViewItem: Identifiable, Hashable {
     let id: Int
     let title: String
     let formattedRating: String

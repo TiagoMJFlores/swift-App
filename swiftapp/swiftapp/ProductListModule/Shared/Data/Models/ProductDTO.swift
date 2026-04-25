@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductDTO: Decodable, Sendable {
+struct ProductDTO: Decodable {
     let id: Int
     let title: String
     let description: String
@@ -19,7 +19,7 @@ struct ProductDTO: Decodable, Sendable {
     let images: [String]?
 }
 
-nonisolated struct ProductsResponseDTO: Decodable, Sendable {
+struct ProductsResponseDTO: Decodable {
     let products: [ProductDTO]
     let total: Int
     let skip: Int

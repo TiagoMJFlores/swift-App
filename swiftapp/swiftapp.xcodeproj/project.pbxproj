@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		058C69292F9D572F003ECA74 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 058C69282F9D572F003ECA74 /* GRDB */; };
+		058C692C2F9D6120003ECA74 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 058C692B2F9D6120003ECA74 /* Dependencies */; };
+		058C692E2F9D6129003ECA74 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 058C692D2F9D6129003ECA74 /* Dependencies */; };
 		05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6A2F9A5E0C00C201F8 /* Resolver */; };
 		05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6E2F9A5E2300C201F8 /* Resolver */; };
 		05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC712F9A5E4800C201F8 /* Kingfisher */; };
@@ -42,7 +44,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
-				Core/DependencyInjection/FormFeatureDependencies.swift,
 				FormModule/Domain/FormInteractor.swift,
 				FormModule/Domain/FormValidators.swift,
 				FormModule/Domain/Models/FormSubmission.swift,
@@ -65,12 +66,30 @@
 		05EFBBCB2F9A24FF00C201F8 /* Exceptions for "swiftapp" folder in "FormFeature" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Core/DependencyInjection/ListFeatureDependencies.swift,
+				ProductListModule/Detail/Domain/ProductDetailInteractor.swift,
+				"ProductListModule/Detail/Presentation/Mappers/Product+DetailViewItem.swift",
+				ProductListModule/Detail/Presentation/ProductDetailViewModel.swift,
 				ProductListModule/Detail/Presentation/Views/ProductDetailView.swift,
 				ProductListModule/Detail/Presentation/Views/StretchHeaderImage.swift,
+				ProductListModule/List/Domain/ProductListInteractor.swift,
+				ProductListModule/List/Domain/Workers/SearchProductsWorker.swift,
+				"ProductListModule/List/Presentation/Mappers/Product+ViewItem.swift",
+				"ProductListModule/List/Presentation/Mappers/RatingCategory+Icon.swift",
+				ProductListModule/List/Presentation/ProductListViewModel.swift,
 				ProductListModule/List/Presentation/Views/ProductListView.swift,
 				ProductListModule/List/Presentation/Views/ProductRow.swift,
 				ProductListModule/Main.swift,
+				ProductListModule/Shared/Data/DataSources/ProductLocalDataSource.swift,
+				"ProductListModule/Shared/Data/Mappers/ProductDTO+Domain.swift",
+				"ProductListModule/Shared/Data/Mappers/ProductEntity+Domain.swift",
+				ProductListModule/Shared/Data/Models/ProductDTO.swift,
+				ProductListModule/Shared/Data/Persistence/DatabaseProvider.swift,
+				ProductListModule/Shared/Data/Persistence/ProductEntity.swift,
+				ProductListModule/Shared/Data/Persistence/SyncState.swift,
+				ProductListModule/Shared/Data/ProductRepository.swift,
+				ProductListModule/Shared/Data/ProductsEndpoint.swift,
+				ProductListModule/Shared/Domain/Models/Product.swift,
+				ProductListModule/Shared/Domain/ProductRepositoryProtocol.swift,
 			);
 			target = 05EFBB882F9A203200C201F8 /* FormFeature */;
 		};
@@ -104,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */,
+				058C692E2F9D6129003ECA74 /* Dependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +148,7 @@
 				058C69292F9D572F003ECA74 /* GRDB in Frameworks */,
 				05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */,
 				05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */,
+				058C692C2F9D6120003ECA74 /* Dependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +205,7 @@
 			name = FormFeature;
 			packageProductDependencies = (
 				05EFBC6A2F9A5E0C00C201F8 /* Resolver */,
+				058C692D2F9D6129003ECA74 /* Dependencies */,
 			);
 			productName = swiftapp;
 			productReference = 05EFBB892F9A203200C201F8 /* FormFeature.app */;
@@ -255,6 +277,7 @@
 				05EFBC6E2F9A5E2300C201F8 /* Resolver */,
 				05EFBC712F9A5E4800C201F8 /* Kingfisher */,
 				058C69282F9D572F003ECA74 /* GRDB */,
+				058C692B2F9D6120003ECA74 /* Dependencies */,
 			);
 			productName = swiftapp;
 			productReference = 05EFBBC82F9A24EC00C201F8 /* ListFeature.app */;
@@ -296,6 +319,7 @@
 				05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */,
 				05EFBC702F9A5E4000C201F8 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				058C69212F9D4AE1003ECA74 /* XCRemoteSwiftPackageReference "GRDB" */,
+				058C692A2F9D610C003ECA74 /* XCRemoteSwiftPackageReference "swift-dependencies" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 05EFBB8A2F9A203200C201F8 /* Products */;
@@ -446,7 +470,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = complete;
 			};
@@ -505,7 +529,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -536,7 +560,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -569,7 +593,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -688,7 +712,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -721,7 +745,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
@@ -788,6 +812,14 @@
 				kind = branch;
 			};
 		};
+		058C692A2F9D610C003ECA74 /* XCRemoteSwiftPackageReference "swift-dependencies" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-dependencies";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.12.0;
+			};
+		};
 		05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/hmlongco/Resolver";
@@ -811,6 +843,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 058C69212F9D4AE1003ECA74 /* XCRemoteSwiftPackageReference "GRDB" */;
 			productName = GRDB;
+		};
+		058C692B2F9D6120003ECA74 /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 058C692A2F9D610C003ECA74 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
+		};
+		058C692D2F9D6129003ECA74 /* Dependencies */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 058C692A2F9D610C003ECA74 /* XCRemoteSwiftPackageReference "swift-dependencies" */;
+			productName = Dependencies;
 		};
 		05EFBC6A2F9A5E0C00C201F8 /* Resolver */ = {
 			isa = XCSwiftPackageProductDependency;

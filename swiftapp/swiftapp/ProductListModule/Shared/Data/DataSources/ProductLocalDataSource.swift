@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Dependencies
 import GRDB
 
 struct SyncStateSnapshot: Sendable {
@@ -95,5 +96,16 @@ final class ProductLocalDataSource: ProductLocalDataSourceProtocol {
             )
             try state.save(db)
         }
+    }
+}
+
+private enum ProductLocalDataSourceKey: DependencyKey {
+    static let liveValue: any ProductLocalDataSourceProtocol = ProductLocalDataSource()
+}
+
+extension DependencyValues {
+    var productLocalDataSource: any ProductLocalDataSourceProtocol {
+        get { self[ProductLocalDataSourceKey.self] }
+        set { self[ProductLocalDataSourceKey.self] = newValue }
     }
 }

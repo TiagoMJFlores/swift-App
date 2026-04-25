@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
-import Resolver
+import Dependencies
 
+@MainActor
 final class ProductListViewModel: ObservableObject {
 
     enum ViewState {
@@ -22,7 +23,7 @@ final class ProductListViewModel: ObservableObject {
     @Published var searchQuery: String = ""
     @Published private(set) var displayedItems: [ProductViewItem] = []
 
-    @Injected private var interactor: ProductListInteractorProtocol
+    @Dependency(\.productListInteractor) private var interactor
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -75,5 +76,18 @@ final class ProductListViewModel: ObservableObject {
                 }
             }
         }
+    }
+}
+
+private enum ProductListViewModelKey: DependencyKey {
+    static let liveValue: @MainActor () -> ProductListViewModel = {
+        ProductListViewModel()
+    }
+}
+
+extension DependencyValues {
+    var makeProductListViewModel: @MainActor () -> ProductListViewModel {
+        get { self[ProductListViewModelKey.self] }
+        set { self[ProductListViewModelKey.self] = newValue }
     }
 }

@@ -10,10 +10,6 @@ import SwiftUI
 @main
 struct Main: App {
 
-    init() {
-        ListFeatureDependencies.register()
-    }
-
     var body: some Scene {
         WindowGroup {
             ProductListView()

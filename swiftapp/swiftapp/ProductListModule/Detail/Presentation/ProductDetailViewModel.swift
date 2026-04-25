@@ -7,7 +7,7 @@
 
 import Foundation
 import Observation
-import Resolver
+import Dependencies
 
 @MainActor
 @Observable
@@ -23,7 +23,7 @@ final class ProductDetailViewModel {
     private(set) var state: ViewState = .idle
 
     @ObservationIgnored
-    @Injected private var interactor: ProductDetailInteractorProtocol
+    @Dependency(\.productDetailInteractor) private var interactor
 
     func load(productId: Int) async {
         state = .loading
@@ -36,5 +36,18 @@ final class ProductDetailViewModel {
         } catch {
             state = .failed(ProductDetailErrorMessageMapper.loadProduct(error).userMessage)
         }
+    }
+}
+
+private enum ProductDetailViewModelKey: DependencyKey {
+    static let liveValue: @MainActor () -> ProductDetailViewModel = {
+        ProductDetailViewModel()
+    }
+}
+
+extension DependencyValues {
+    var makeProductDetailViewModel: @MainActor () -> ProductDetailViewModel {
+        get { self[ProductDetailViewModelKey.self] }
+        set { self[ProductDetailViewModelKey.self] = newValue }
     }
 }

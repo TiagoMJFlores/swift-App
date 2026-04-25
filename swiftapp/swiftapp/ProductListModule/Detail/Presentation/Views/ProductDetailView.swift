@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-import Resolver
+import Dependencies
 
+@MainActor
 struct ProductDetailView: View {
 
     private enum Strings {
@@ -37,7 +38,8 @@ struct ProductDetailView: View {
 
     init(productId: Int) {
         self.productId = productId
-        _viewModel = State(wrappedValue: Resolver.resolve())
+        @Dependency(\.makeProductDetailViewModel) var make
+        _viewModel = State(wrappedValue: make())
     }
 
     var body: some View {

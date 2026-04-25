@@ -6,17 +6,31 @@
 //
 
 import Foundation
-import Resolver
+import Dependencies
 
-protocol ProductDetailInteractorProtocol {
+protocol ProductDetailInteractorProtocol: Sendable {
     func loadProduct(id: Int) async throws -> Product?
 }
 
 final class ProductDetailInteractor: ProductDetailInteractorProtocol {
 
-    @Injected private var repository: ProductRepositoryProtocol
+    private var repository: any ProductRepositoryProtocol {
+        @Dependency(\.productRepository) var repo
+        return repo
+    }
 
     func loadProduct(id: Int) async throws -> Product? {
         try await repository.product(withId: id)
+    }
+}
+
+private enum ProductDetailInteractorKey: DependencyKey {
+    static let liveValue: any ProductDetailInteractorProtocol = ProductDetailInteractor()
+}
+
+extension DependencyValues {
+    var productDetailInteractor: any ProductDetailInteractorProtocol {
+        get { self[ProductDetailInteractorKey.self] }
+        set { self[ProductDetailInteractorKey.self] = newValue }
     }
 }

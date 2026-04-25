@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Dependencies
 
 protocol HTTPClientProtocol: Sendable {
     func send<T: Decodable & Sendable>(_ endpoint: EndpointProtocol, as type: T.Type) async throws -> T
 }
 
-nonisolated final class URLSessionHTTPClient: HTTPClientProtocol {
+final class URLSessionHTTPClient: HTTPClientProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
 
@@ -46,5 +47,16 @@ nonisolated final class URLSessionHTTPClient: HTTPClientProtocol {
         } catch {
             throw NetworkError.decoding(error)
         }
+    }
+}
+
+private enum HTTPClientKey: DependencyKey {
+    static let liveValue: any HTTPClientProtocol = URLSessionHTTPClient()
+}
+
+extension DependencyValues {
+    var httpClient: any HTTPClientProtocol {
+        get { self[HTTPClientKey.self] }
+        set { self[HTTPClientKey.self] = newValue }
     }
 }

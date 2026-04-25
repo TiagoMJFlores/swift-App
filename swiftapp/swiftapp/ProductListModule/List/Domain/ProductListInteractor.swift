@@ -7,9 +7,9 @@
 
 import Foundation
 import Combine
-import Resolver
+import Dependencies
 
-protocol ProductListInteractorProtocol {
+protocol ProductListInteractorProtocol: Sendable {
     func productsPublisher() -> AnyPublisher<[Product], Error>
     func syncFromAPI() async throws
     func search(query: String, in products: [Product]) -> [Product]
@@ -17,7 +17,10 @@ protocol ProductListInteractorProtocol {
 
 final class ProductListInteractor: ProductListInteractorProtocol {
 
-    @Injected private var repository: ProductRepositoryProtocol
+    private var repository: any ProductRepositoryProtocol {
+        @Dependency(\.productRepository) var repo
+        return repo
+    }
 
     func productsPublisher() -> AnyPublisher<[Product], Error> {
         repository.productsPublisher()
@@ -29,5 +32,16 @@ final class ProductListInteractor: ProductListInteractorProtocol {
 
     func search(query: String, in products: [Product]) -> [Product] {
         SearchProductsWorker.filter(products, query: query)
+    }
+}
+
+private enum ProductListInteractorKey: DependencyKey {
+    static let liveValue: any ProductListInteractorProtocol = ProductListInteractor()
+}
+
+extension DependencyValues {
+    var productListInteractor: any ProductListInteractorProtocol {
+        get { self[ProductListInteractorKey.self] }
+        set { self[ProductListInteractorKey.self] = newValue }
     }
 }

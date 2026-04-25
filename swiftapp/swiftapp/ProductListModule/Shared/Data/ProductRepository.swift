@@ -7,22 +7,24 @@
 
 import Foundation
 @preconcurrency import Combine
-import Resolver
+import Dependencies
 
-nonisolated final class ProductRepository: ProductRepositoryProtocol {
+final class ProductRepository: ProductRepositoryProtocol {
 
-    private let httpClient: HTTPClientProtocol
-    private let localDataSource: ProductLocalDataSourceProtocol
     private let pageSize: Int
 
-    init(
-        httpClient: HTTPClientProtocol = Resolver.resolve(),
-        localDataSource: ProductLocalDataSourceProtocol = Resolver.resolve(),
-        pageSize: Int = 30
-    ) {
-        self.httpClient = httpClient
-        self.localDataSource = localDataSource
+    init(pageSize: Int = 30) {
         self.pageSize = pageSize
+    }
+
+    private var httpClient: any HTTPClientProtocol {
+        @Dependency(\.httpClient) var http
+        return http
+    }
+
+    private var localDataSource: any ProductLocalDataSourceProtocol {
+        @Dependency(\.productLocalDataSource) var local
+        return local
     }
 
     func productsPublisher() -> AnyPublisher<[Product], Error> {
@@ -59,5 +61,16 @@ nonisolated final class ProductRepository: ProductRepositoryProtocol {
                 completedAt: downloaded >= total ? .now : nil
             ))
         }
+    }
+}
+
+private enum ProductRepositoryKey: DependencyKey {
+    static let liveValue: any ProductRepositoryProtocol = ProductRepository()
+}
+
+extension DependencyValues {
+    var productRepository: any ProductRepositoryProtocol {
+        get { self[ProductRepositoryKey.self] }
+        set { self[ProductRepositoryKey.self] = newValue }
     }
 }

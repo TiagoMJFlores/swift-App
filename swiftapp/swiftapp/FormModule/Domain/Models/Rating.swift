@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Rating: String, CaseIterable, Identifiable, Sendable {
+enum Rating: String, CaseIterable, Identifiable {
     case bad = "Bad"
     case satisfactory = "Satisfactory"
     case good = "Good"

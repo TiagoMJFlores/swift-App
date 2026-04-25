@@ -7,7 +7,7 @@
 
 import Foundation
 import Observation
-import Resolver
+import Dependencies
 
 @MainActor
 @Observable
@@ -25,7 +25,7 @@ final class FormViewModel {
     private(set) var didSubmit = false
 
     @ObservationIgnored
-    @Injected private var interactor: FormInteractorProtocol
+    @Dependency(\.formInteractor) private var interactor
 
     // MARK: - Derived validation state
 
@@ -73,5 +73,18 @@ final class FormViewModel {
         deliveryDate = Date()
         rating = nil
         didSubmit = false
+    }
+}
+
+private enum FormViewModelKey: DependencyKey {
+    static let liveValue: @MainActor () -> FormViewModel = {
+        FormViewModel()
+    }
+}
+
+extension DependencyValues {
+    var makeFormViewModel: @MainActor () -> FormViewModel {
+        get { self[FormViewModelKey.self] }
+        set { self[FormViewModelKey.self] = newValue }
     }
 }

@@ -10,10 +10,6 @@ import SwiftUI
 @main
 struct Main: App {
 
-    init() {
-        FormFeatureDependencies.register()
-    }
-
     var body: some Scene {
         WindowGroup {
             FormView()

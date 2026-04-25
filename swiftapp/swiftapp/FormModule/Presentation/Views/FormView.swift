@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
-import Resolver
+import Dependencies
 
+@MainActor
 struct FormView: View {
 
     private enum Strings {
@@ -20,7 +21,8 @@ struct FormView: View {
     @State private var viewModel: FormViewModel
 
     init() {
-        _viewModel = State(wrappedValue: Resolver.resolve())
+        @Dependency(\.makeFormViewModel) var make
+        _viewModel = State(wrappedValue: make())
     }
 
     var body: some View {
