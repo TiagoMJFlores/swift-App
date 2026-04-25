@@ -9,6 +9,7 @@ import Foundation
 import Combine
 
 protocol ProductRepositoryProtocol: Sendable {
-    func productsStream() -> AnyPublisher<[Product], Error>
+    func productsPublisher() -> AnyPublisher<[Product], Error>
+    func syncFromAPI() async throws
     func product(withId id: Int) async throws -> Product?
 }

@@ -49,15 +49,31 @@ final class ProductListViewModel: ObservableObject {
 
     func load() {
         state = .loading
-        interactor.productsStream()
+
+        interactor.productsPublisher()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     self?.state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)
                 }
             } receiveValue: { [weak self] products in
-                self?.state = products.isEmpty ? .loading : .loaded(products)
+                guard let self else { return }
+                if !products.isEmpty {
+                    self.state = .loaded(products)
+                }
             }
             .store(in: &cancellables)
+
+        Task { [weak self, interactor] in
+            do {
+                try await interactor.syncFromAPI()
+            } catch {
+                await MainActor.run {
+                    guard let self else { return }
+                    if case .loaded = self.state { return }
+                    self.state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import GRDB
 
 struct SyncStateSnapshot: Sendable {
@@ -17,6 +18,7 @@ struct SyncStateSnapshot: Sendable {
 }
 
 protocol ProductLocalDataSourceProtocol: Sendable {
+    func productsPublisher() -> AnyPublisher<[Product], Error>
     func allProducts() async throws -> [Product]
     func product(withId id: Int) async throws -> Product?
     func save(_ products: [Product]) async throws
@@ -30,6 +32,19 @@ final class ProductLocalDataSource: ProductLocalDataSourceProtocol {
 
     init(dbQueue: DatabaseQueue = DatabaseProvider.shared) {
         self.dbQueue = dbQueue
+    }
+
+    func productsPublisher() -> AnyPublisher<[Product], Error> {
+        ValueObservation
+            .tracking { db in
+                try ProductEntity
+                    .order(ProductEntity.Columns.id)
+                    .fetchAll(db)
+            }
+            .publisher(in: dbQueue)
+            .map { entities in entities.map { $0.toDomain() } }
+            .mapError { $0 as Error }
+            .eraseToAnyPublisher()
     }
 
     func allProducts() async throws -> [Product] {

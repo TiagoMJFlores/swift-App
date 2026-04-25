@@ -25,59 +25,39 @@ nonisolated final class ProductRepository: ProductRepositoryProtocol {
         self.pageSize = pageSize
     }
 
+    func productsPublisher() -> AnyPublisher<[Product], Error> {
+        localDataSource.productsPublisher()
+    }
+
     func product(withId id: Int) async throws -> Product? {
         try await localDataSource.product(withId: id)
     }
 
-    func productsStream() -> AnyPublisher<[Product], Error> {
-        let subject = PassthroughSubject<[Product], Error>()
+    func syncFromAPI() async throws {
+        let syncState = try await localDataSource.loadSyncState()
+        if syncState?.isComplete == true { return }
 
-        let task = Task { [httpClient, localDataSource, pageSize] in
-            do {
-                let syncState = try await localDataSource.loadSyncState()
-                var accumulated = try await localDataSource.allProducts()
+        var downloaded = syncState?.totalDownloaded ?? 0
+        var total = syncState?.totalExpected ?? Int.max
 
-                subject.send(accumulated)
+        while downloaded < total {
+            try Task.checkCancellation()
 
-                if syncState?.isComplete == true {
-                    subject.send(completion: .finished)
-                    return
-                }
+            let response = try await httpClient.send(
+                ProductsEndpoint.list(limit: pageSize, skip: downloaded),
+                as: ProductsResponseDTO.self
+            )
+            let pageProducts = response.products.map { $0.toDomain() }
+            try await localDataSource.save(pageProducts)
 
-                var downloaded = syncState?.totalDownloaded ?? 0
-                var total = syncState?.totalExpected ?? Int.max
+            total = response.total
+            downloaded += pageProducts.count
 
-                while downloaded < total {
-                    try Task.checkCancellation()
-
-                    let response = try await httpClient.send(
-                        ProductsEndpoint.list(limit: pageSize, skip: downloaded),
-                        as: ProductsResponseDTO.self
-                    )
-                    let pageProducts = response.products.map { $0.toDomain() }
-                    try await localDataSource.save(pageProducts)
-
-                    accumulated.append(contentsOf: pageProducts)
-                    total = response.total
-                    downloaded += pageProducts.count
-
-                    try await localDataSource.saveSyncState(SyncStateSnapshot(
-                        totalExpected: total,
-                        totalDownloaded: downloaded,
-                        completedAt: downloaded >= total ? .now : nil
-                    ))
-
-                    subject.send(accumulated)
-                }
-
-                subject.send(completion: .finished)
-            } catch {
-                subject.send(completion: .failure(error))
-            }
+            try await localDataSource.saveSyncState(SyncStateSnapshot(
+                totalExpected: total,
+                totalDownloaded: downloaded,
+                completedAt: downloaded >= total ? .now : nil
+            ))
         }
-
-        return subject
-            .handleEvents(receiveCancel: { task.cancel() })
-            .eraseToAnyPublisher()
     }
 }

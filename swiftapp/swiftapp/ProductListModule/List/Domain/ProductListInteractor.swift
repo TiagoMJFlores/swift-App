@@ -10,7 +10,8 @@ import Combine
 import Resolver
 
 protocol ProductListInteractorProtocol {
-    func productsStream() -> AnyPublisher<[Product], Error>
+    func productsPublisher() -> AnyPublisher<[Product], Error>
+    func syncFromAPI() async throws
     func search(query: String, in products: [Product]) -> [Product]
 }
 
@@ -18,8 +19,12 @@ final class ProductListInteractor: ProductListInteractorProtocol {
 
     @Injected private var repository: ProductRepositoryProtocol
 
-    func productsStream() -> AnyPublisher<[Product], Error> {
-        repository.productsStream()
+    func productsPublisher() -> AnyPublisher<[Product], Error> {
+        repository.productsPublisher()
+    }
+
+    func syncFromAPI() async throws {
+        try await repository.syncFromAPI()
     }
 
     func search(query: String, in products: [Product]) -> [Product] {
