@@ -47,14 +47,17 @@ final class ProductListViewModel: ObservableObject {
         .assign(to: &$displayedItems)
     }
 
-    func load() async {
+    func load() {
         state = .loading
-        do {
-            for try await products in interactor.productsStream() {
-                state = products.isEmpty ? .loading : .loaded(products)
+        interactor.productsStream()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                if case .failure(let error) = completion {
+                    self?.state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)
+                }
+            } receiveValue: { [weak self] products in
+                self?.state = products.isEmpty ? .loading : .loaded(products)
             }
-        } catch {
-            state = .failed(ProductListErrorMessageMapper.loadProducts(error).userMessage)
-        }
+            .store(in: &cancellables)
     }
 }

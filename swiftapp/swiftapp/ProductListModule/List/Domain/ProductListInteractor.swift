@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 import Resolver
 
 protocol ProductListInteractorProtocol {
-    func productsStream() -> AsyncThrowingStream<[Product], Error>
+    func productsStream() -> AnyPublisher<[Product], Error>
     func search(query: String, in products: [Product]) -> [Product]
 }
 
@@ -17,7 +18,7 @@ final class ProductListInteractor: ProductListInteractorProtocol {
 
     @Injected private var repository: ProductRepositoryProtocol
 
-    func productsStream() -> AsyncThrowingStream<[Product], Error> {
+    func productsStream() -> AnyPublisher<[Product], Error> {
         repository.productsStream()
     }
 

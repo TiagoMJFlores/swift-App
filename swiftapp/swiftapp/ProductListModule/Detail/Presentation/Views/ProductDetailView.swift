@@ -45,7 +45,7 @@ struct ProductDetailView: View {
             .navigationBarTitleDisplayMode(.inline)
             .task {
                 if case .idle = viewModel.state {
-                    viewModel.load(productId: productId)
+                    await viewModel.load(productId: productId)
                 }
             }
     }

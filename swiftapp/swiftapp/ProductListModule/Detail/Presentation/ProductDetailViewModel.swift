@@ -25,10 +25,10 @@ final class ProductDetailViewModel {
     @ObservationIgnored
     @Injected private var interactor: ProductDetailInteractorProtocol
 
-    func load(productId: Int) {
+    func load(productId: Int) async {
         state = .loading
         do {
-            guard let product = try interactor.loadProduct(id: productId) else {
+            guard let product = try await interactor.loadProduct(id: productId) else {
                 state = .failed(ProductDetailErrorMessageMapper.notFound.userMessage)
                 return
             }

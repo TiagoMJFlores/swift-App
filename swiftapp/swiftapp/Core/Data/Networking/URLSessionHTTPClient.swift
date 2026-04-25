@@ -11,7 +11,7 @@ protocol HTTPClientProtocol: Sendable {
     func send<T: Decodable & Sendable>(_ endpoint: EndpointProtocol, as type: T.Type) async throws -> T
 }
 
-final class URLSessionHTTPClient: HTTPClientProtocol {
+nonisolated final class URLSessionHTTPClient: HTTPClientProtocol {
     private let session: URLSession
     private let decoder: JSONDecoder
 

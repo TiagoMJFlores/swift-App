@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import Combine
 
-protocol ProductRepositoryProtocol {
-    func productsStream() -> AsyncThrowingStream<[Product], Error>
-    func product(withId id: Int) throws -> Product?
+protocol ProductRepositoryProtocol: Sendable {
+    func productsStream() -> AnyPublisher<[Product], Error>
+    func product(withId id: Int) async throws -> Product?
 }

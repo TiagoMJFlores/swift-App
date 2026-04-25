@@ -16,14 +16,15 @@ struct SyncStateSnapshot: Sendable {
     var isComplete: Bool { completedAt != nil }
 }
 
-protocol ProductLocalDataSourceProtocol {
-    func allProducts() throws -> [Product]
-    func product(withId id: Int) throws -> Product?
-    func save(_ products: [Product]) throws
-    func loadSyncState() throws -> SyncStateSnapshot?
-    func saveSyncState(_ snapshot: SyncStateSnapshot) throws
+protocol ProductLocalDataSourceProtocol: Sendable {
+    func allProducts() async throws -> [Product]
+    func product(withId id: Int) async throws -> Product?
+    func save(_ products: [Product]) async throws
+    func loadSyncState() async throws -> SyncStateSnapshot?
+    func saveSyncState(_ snapshot: SyncStateSnapshot) async throws
 }
 
+@MainActor
 final class ProductLocalDataSource: ProductLocalDataSourceProtocol {
 
     private let container: ModelContainer

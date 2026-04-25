@@ -38,9 +38,9 @@ struct ProductListView: View {
                     ProductDetailView(productId: productId)
                 }
         }
-        .task {
+        .onAppear {
             if case .idle = viewModel.state {
-                await viewModel.load()
+                viewModel.load()
             }
         }
     }
