@@ -6,73 +6,66 @@
 //
 
 import Foundation
-import Observation
+import Combine
 import Dependencies
 
 @MainActor
-@Observable
-final class FormViewModel {
+final class FormViewModel: ObservableObject {
 
-    // MARK: - Inputs
-
-    var name = ""
-    var email = ""
-    var number = ""
-    var promoCode = ""
-    var deliveryDate = Date()
-    var rating: Rating?
-
-    private(set) var didSubmit = false
-
-    @ObservationIgnored
-    @Dependency(\.formInteractor) private var interactor
-
-    // MARK: - Derived validation state
-
-    var nameError: ValidationError?   { FormValidators.validateName(name) }
-    var emailError: ValidationError?  { FormValidators.validateEmail(email) }
-    var numberError: ValidationError? { FormValidators.validateNumber(number) }
-    var promoError: ValidationError?  { FormValidators.validatePromoCode(promoCode) }
-    var dateError: ValidationError?   { FormValidators.validateDate(deliveryDate) }
-    var ratingError: ValidationError? { FormValidators.validateRating(rating) }
-
-    var isFormValid: Bool {
-        nameError == nil
-            && emailError == nil
-            && numberError == nil
-            && promoError == nil
-            && dateError == nil
-            && ratingError == nil
+    enum SubmitState: Equatable {
+        case idle
+        case submitting
+        case succeeded
+        case failed(String)
     }
 
-    // MARK: - Actions
+    @Published var formInput = FormInput()
+    @Published private(set) var errors = FormErrors()
+    @Published private(set) var isSubmitEnabled = false
+    @Published private(set) var submitState: SubmitState = .idle
+
+    @Dependency(\.formValidator) private var validator
+    @Dependency(\.formInteractor) private var interactor
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init() {
+        bindValidation()
+    }
+
+    private func bindValidation() {
+        $formInput
+            .map { [validator] input in validator.validate(input) }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] errors in
+                self?.errors = errors
+                self?.isSubmitEnabled = errors.isEmpty
+            }
+            .store(in: &cancellables)
+    }
 
     func submit() {
-        guard isFormValid, let rating else { return }
+        guard isSubmitEnabled, let rating = formInput.rating else { return }
         let submission = FormSubmission(
-            name: name,
-            email: email,
-            number: number,
-            promoCode: promoCode,
-            deliveryDate: deliveryDate,
+            name: formInput.name,
+            email: formInput.email,
+            number: formInput.number,
+            promoCode: formInput.promoCode,
+            deliveryDate: formInput.deliveryDate,
             rating: rating
         )
+        submitState = .submitting
         do {
             try interactor.submit(submission)
-            didSubmit = true
+            submitState = .succeeded
         } catch {
-            // do later
+            submitState = .failed(error.localizedDescription)
         }
     }
 
     func reset() {
-        name = ""
-        email = ""
-        number = ""
-        promoCode = ""
-        deliveryDate = Date()
-        rating = nil
-        didSubmit = false
+        formInput = FormInput()
+        submitState = .idle
     }
 }
 

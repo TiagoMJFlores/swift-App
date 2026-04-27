@@ -20,38 +20,38 @@ struct UserDetailsSection: View {
         static let fieldErrorSpacing: CGFloat = 4
     }
 
-    @Bindable var viewModel: FormViewModel
+    @ObservedObject var viewModel: FormViewModel
 
     var body: some View {
         Section(Strings.title) {
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
                 FloatingLabelTextField(
                     label: Strings.nameLabel,
-                    text: $viewModel.name,
+                    text: $viewModel.formInput.name,
                     textContentType: .name
                 )
-                FieldErrorLabel(error: viewModel.nameError)
+                FieldErrorLabel(error: viewModel.errors.name)
             }
 
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
                 FloatingLabelTextField(
                     label: Strings.emailLabel,
-                    text: $viewModel.email,
+                    text: $viewModel.formInput.email,
                     keyboardType: .emailAddress,
                     textContentType: .emailAddress,
                     autocapitalization: .never,
                     autocorrectionDisabled: true
                 )
-                FieldErrorLabel(error: viewModel.emailError)
+                FieldErrorLabel(error: viewModel.errors.email)
             }
 
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
                 FloatingLabelTextField(
                     label: Strings.numberLabel,
-                    text: $viewModel.number,
+                    text: $viewModel.formInput.number,
                     keyboardType: .numberPad
                 )
-                FieldErrorLabel(error: viewModel.numberError)
+                FieldErrorLabel(error: viewModel.errors.number)
             }
         }
     }

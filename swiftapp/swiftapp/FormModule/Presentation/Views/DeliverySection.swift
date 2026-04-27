@@ -18,17 +18,17 @@ struct DeliverySection: View {
         static let fieldErrorSpacing: CGFloat = 4
     }
 
-    @Bindable var viewModel: FormViewModel
+    @ObservedObject var viewModel: FormViewModel
 
     var body: some View {
         Section(Strings.title) {
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
                 DatePicker(
                     Strings.deliveryDateLabel,
-                    selection: $viewModel.deliveryDate,
+                    selection: $viewModel.formInput.deliveryDate,
                     displayedComponents: .date
                 )
-                FieldErrorLabel(error: viewModel.dateError)
+                FieldErrorLabel(error: viewModel.errors.deliveryDate)
             }
         }
     }

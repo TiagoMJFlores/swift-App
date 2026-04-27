@@ -19,18 +19,18 @@ struct RatingSection: View {
         static let fieldErrorSpacing: CGFloat = 4
     }
 
-    @Bindable var viewModel: FormViewModel
+    @ObservedObject var viewModel: FormViewModel
 
     var body: some View {
         Section(Strings.title) {
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
-                Picker(Strings.ratingLabel, selection: $viewModel.rating) {
+                Picker(Strings.ratingLabel, selection: $viewModel.formInput.rating) {
                     Text(Strings.ratingPlaceholder).tag(Rating?.none)
                     ForEach(Rating.allCases) { rating in
                         Text(rating.rawValue).tag(Optional(rating))
                     }
                 }
-                FieldErrorLabel(error: viewModel.ratingError)
+                FieldErrorLabel(error: viewModel.errors.rating)
             }
         }
     }

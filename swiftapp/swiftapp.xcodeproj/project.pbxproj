@@ -46,6 +46,8 @@
 				Assets.xcassets,
 				FormModule/Domain/FormInteractor.swift,
 				FormModule/Domain/FormValidators.swift,
+				FormModule/Domain/Models/FormErrors.swift,
+				FormModule/Domain/Models/FormInput.swift,
 				FormModule/Domain/Models/FormSubmission.swift,
 				FormModule/Domain/Models/Rating.swift,
 				FormModule/Domain/ValidationError.swift,

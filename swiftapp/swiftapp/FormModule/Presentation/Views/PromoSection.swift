@@ -18,18 +18,18 @@ struct PromoSection: View {
         static let fieldErrorSpacing: CGFloat = 4
     }
 
-    @Bindable var viewModel: FormViewModel
+    @ObservedObject var viewModel: FormViewModel
 
     var body: some View {
         Section(Strings.title) {
             VStack(alignment: .leading, spacing: Layout.fieldErrorSpacing) {
                 FloatingLabelTextField(
                     label: Strings.promoCodeLabel,
-                    text: $viewModel.promoCode,
+                    text: $viewModel.formInput.promoCode,
                     autocapitalization: .characters,
                     autocorrectionDisabled: true
                 )
-                FieldErrorLabel(error: viewModel.promoError)
+                FieldErrorLabel(error: viewModel.errors.promoCode)
             }
         }
     }

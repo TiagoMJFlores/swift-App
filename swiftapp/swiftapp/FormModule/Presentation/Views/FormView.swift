@@ -18,11 +18,11 @@ struct FormView: View {
         static let successMessage = "Your submission was recorded."
     }
 
-    @State private var viewModel: FormViewModel
+    @StateObject private var viewModel: FormViewModel
 
     init() {
         @Dependency(\.makeFormViewModel) var make
-        _viewModel = State(wrappedValue: make())
+        _viewModel = StateObject(wrappedValue: make())
     }
 
     var body: some View {
@@ -48,7 +48,7 @@ struct FormView: View {
 
     private var successBinding: Binding<Bool> {
         Binding(
-            get: { viewModel.didSubmit },
+            get: { viewModel.submitState == .succeeded },
             set: { if !$0 { viewModel.reset() } }
         )
     }

@@ -18,7 +18,7 @@ struct FormActionsBar: View {
         static let spacing: CGFloat = 12
     }
 
-    @Bindable var viewModel: FormViewModel
+    @ObservedObject var viewModel: FormViewModel
 
     var body: some View {
         HStack(spacing: Layout.spacing) {
@@ -29,7 +29,7 @@ struct FormActionsBar: View {
             Button(Strings.submit) { viewModel.submit() }
                 .buttonStyle(.borderedProminent)
                 .frame(maxWidth: .infinity)
-                .disabled(!viewModel.isFormValid)
+                .disabled(!viewModel.isSubmitEnabled)
         }
         .padding()
         .background(.bar)
