@@ -1,5 +1,5 @@
 {
-  "originHash" : "14aafbac46b0e7ef5eeb47038161e80b92dfd1245434d3d090c4a52ed4ac5b16",
+  "originHash" : "f1dde1c6b5f6bba28f75178e68dfc14cc56a049d8b3db5e3ef24d6cfa963e571",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "c152c1915f60c51e4afa0752656993ee5b3c63db",
         "version" : "8.8.1"
-      }
-    },
-    {
-      "identity" : "resolver",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hmlongco/Resolver",
-      "state" : {
-        "revision" : "47602af1ac8d7952299fbd0bda3cfbd12cf3a8ca",
-        "version" : "1.5.1"
       }
     },
     {
