@@ -11,7 +11,6 @@
 		058C692C2F9D6120003ECA74 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 058C692B2F9D6120003ECA74 /* Dependencies */; };
 		058C692E2F9D6129003ECA74 /* Dependencies in Frameworks */ = {isa = PBXBuildFile; productRef = 058C692D2F9D6129003ECA74 /* Dependencies */; };
 		05EFBC6B2F9A5E0C00C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6A2F9A5E0C00C201F8 /* Resolver */; };
-		05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC6E2F9A5E2300C201F8 /* Resolver */; };
 		05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 05EFBC712F9A5E4800C201F8 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
@@ -149,7 +148,6 @@
 			files = (
 				058C69292F9D572F003ECA74 /* GRDB in Frameworks */,
 				05EFBC722F9A5E4800C201F8 /* Kingfisher in Frameworks */,
-				05EFBC6F2F9A5E2300C201F8 /* Resolver in Frameworks */,
 				058C692C2F9D6120003ECA74 /* Dependencies in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,7 +274,6 @@
 			);
 			name = ListFeature;
 			packageProductDependencies = (
-				05EFBC6E2F9A5E2300C201F8 /* Resolver */,
 				05EFBC712F9A5E4800C201F8 /* Kingfisher */,
 				058C69282F9D572F003ECA74 /* GRDB */,
 				058C692B2F9D6120003ECA74 /* Dependencies */,
@@ -857,11 +854,6 @@
 			productName = Dependencies;
 		};
 		05EFBC6A2F9A5E0C00C201F8 /* Resolver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */;
-			productName = Resolver;
-		};
-		05EFBC6E2F9A5E2300C201F8 /* Resolver */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 05EFBC382F9A50EB00C201F8 /* XCRemoteSwiftPackageReference "Resolver" */;
 			productName = Resolver;
